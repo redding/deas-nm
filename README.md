@@ -1,6 +1,6 @@
 # DeasNm
 
-TODO: Write a gem description
+[Deas](https://github.com/redding/deas) template engine for rendering [Nm](https://github.com/redding/nm) templates
 
 ## Usage
 

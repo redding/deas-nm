@@ -1,5 +1,5 @@
 require "deas-nm/version"
 
-module DeasNm
+module Deas::Nm
   # TODO: your code goes here...
 end
