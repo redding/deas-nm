@@ -15,7 +15,7 @@ class Deas::Nm::TemplateEngine
     end
     subject{ @engine }
 
-    should have_imeths :nm_source, :nm_handler_local
+    should have_imeths :nm_source, :nm_handler_local, :nm_serializer
     should have_imeths :render, :partial, :capture_partial
 
     should "be a Deas template engine" do
@@ -38,22 +38,35 @@ class Deas::Nm::TemplateEngine
       assert_equal handler_local, engine.nm_handler_local
     end
 
-    should "render nm template files" do
+    should "use a no-op serializer by default" do
+      obj = Factory.integer
+      assert_equal obj, subject.nm_serializer.call(obj, Factory.string)
+    end
+
+    should "render nm template files and serialize them" do
+      engine = Deas::Nm::TemplateEngine.new({
+        'source_path' => TEST_SUPPORT_PATH,
+        'serializer' => proc{ |obj, template_name| obj.to_s }
+      })
       view_handler = OpenStruct.new({
         :identifier => Factory.integer,
         :name => Factory.string
       })
       locals = { 'local1' => Factory.string }
-      exp = Factory.template_json_rendered(view_handler, locals)
+      exp = Factory.template_json_rendered(view_handler, locals).to_s
 
-      assert_equal exp, subject.render('template.json', view_handler, locals)
+      assert_equal exp, engine.render('template.json', view_handler, locals)
     end
 
-    should "render nm partials" do
+    should "render nm partials and serialize them" do
+      engine = Deas::Nm::TemplateEngine.new({
+        'source_path' => TEST_SUPPORT_PATH,
+        'serializer' => proc{ |obj, template_name| obj.to_s }
+      })
       locals = { 'local1' => Factory.string }
-      exp = Factory.partial_json_rendered(locals)
+      exp = Factory.partial_json_rendered(locals).to_s
 
-      assert_equal exp, subject.partial('_partial.json', locals)
+      assert_equal exp, engine.partial('_partial.json', locals)
     end
 
     should "not implement the engine capture partial method" do

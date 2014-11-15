@@ -21,14 +21,45 @@ end
 
 Add `.nm` to any template files in your template source path.  Deas will render their content using Nm when they are rendered.
 
+### Serialization
+
+Nm doesn't serialize the objects it renders - it just returns them.  However, Deas expects serialized body content.  By default, the rendered objects are not serialized.
+
+To serialize the rendered objects, specify a serializer when registering:
+
+```ruby
+# this uses Oj to serialize to JSON (for example)
+c.template_source "/path/to/templates" do |s|
+  s.engine('nm', Deas::Nm::TemplateEngine, {
+    'serializer' => proc{ |obj, template_name| Oj.dump(obj, :mode => :strict) }
+  })
+end
+```
+
+The template name is passed to any serializer proc.  This can be helpful if choosing how to serialize is conditonal upon the template name.  For example:
+
+```ruby
+c.template_source "/path/to/templates" do |s|
+  s.engine('nm', Deas::Nm::TemplateEngine, {
+    'serializer' => proc do |obj, template_name|
+      if File.extname(template_name) == '.json'
+        Oj.dump(obj, :mode => :strict)
+      else
+        # serialize some other way?
+      end
+    end
+  })
+end
+```
+
 ### Notes
 
 Nm doesn't allow overriding the template scope but instead allows you to pass in data that binds to the template scope as local methods.  By default, the view handler will be bound to Nm's scope via the `view` method in templates.  If you want to change this, provide a `'handler_local'` option when registering:
 
 ```ruby
-  c.template_source "/path/to/templates" do |s|
-    s.engine 'nm', Deas::Nm::TemplateEngine, 'handler_local' => 'view_handler'
-  end
+c.template_source "/path/to/templates" do |s|
+  s.engine 'nm', Deas::Nm::TemplateEngine, 'handler_local' => 'view_handler'
+end
 ```
 
 ## Installation
