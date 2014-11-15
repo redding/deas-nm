@@ -1,0 +1,5 @@
+node('thing') {
+  node('id',     view.identifier)
+  node('name',   view.name)
+  node('local1', local1)
+}

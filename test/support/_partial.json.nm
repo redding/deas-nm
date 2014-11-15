@@ -1,0 +1,3 @@
+node('thing') {
+  node('local1', local1)
+}

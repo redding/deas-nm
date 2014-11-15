@@ -9,4 +9,5 @@ require 'pry'
 
 require 'test/support/factory'
 
-# TODO: put test helpers here...
+require 'pathname'
+TEST_SUPPORT_PATH = Pathname.new(File.expand_path('../support', __FILE__))
