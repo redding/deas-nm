@@ -1,10 +1,35 @@
-# DeasNm
+# Deas::Nm
 
 [Deas](https://github.com/redding/deas) template engine for rendering [Nm](https://github.com/redding/nm) templates
 
 ## Usage
 
-TODO: Write code samples and usage instructions here
+Register the engine:
+
+```ruby
+require 'deas'
+require 'deas-nm'
+
+Deas.configure do |c|
+
+  c.template_source "/path/to/templates" do |s|
+    s.engine 'nm', Deas::Nm::TemplateEngine
+  end
+
+end
+```
+
+Add `.nm` to any template files in your template source path.  Deas will render their content using Nm when they are rendered.
+
+### Notes
+
+Nm doesn't allow overriding the template scope but instead allows you to pass in data that binds to the template scope as local methods.  By default, the view handler will be bound to Nm's scope via the `view` method in templates.  If you want to change this, provide a `'handler_local'` option when registering:
+
+```ruby
+  c.template_source "/path/to/templates" do |s|
+    s.engine 'nm', Deas::Nm::TemplateEngine, 'handler_local' => 'view_handler'
+  end
+```
 
 ## Installation
 
