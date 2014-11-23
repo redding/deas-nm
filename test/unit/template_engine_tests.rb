@@ -15,7 +15,8 @@ class Deas::Nm::TemplateEngine
     end
     subject{ @engine }
 
-    should have_imeths :nm_source, :nm_handler_local, :nm_serializer
+    should have_imeths :nm_source, :nm_handler_local, :nm_logger_local
+    should have_imeths :nm_serializer
     should have_imeths :render, :partial, :capture_partial
 
     should "be a Deas template engine" do
@@ -38,6 +39,16 @@ class Deas::Nm::TemplateEngine
       assert_equal handler_local, engine.nm_handler_local
     end
 
+    should "use 'logger' as the logger local name by default" do
+      assert_equal 'logger', subject.nm_logger_local
+    end
+
+    should "allow custom logger local names" do
+      logger_local = Factory.string
+      engine = Deas::Nm::TemplateEngine.new('logger_local' => logger_local)
+      assert_equal logger_local, engine.nm_logger_local
+    end
+
     should "use a no-op serializer by default" do
       obj = Factory.integer
       assert_equal obj, subject.nm_serializer.call(obj, Factory.string)
@@ -53,7 +64,7 @@ class Deas::Nm::TemplateEngine
         :name => Factory.string
       })
       locals = { 'local1' => Factory.string }
-      exp = Factory.template_json_rendered(view_handler, locals).to_s
+      exp = Factory.template_json_rendered(engine, view_handler, locals).to_s
 
       assert_equal exp, engine.render('template.json', view_handler, locals)
     end
@@ -64,7 +75,7 @@ class Deas::Nm::TemplateEngine
         'serializer' => proc{ |obj, template_name| obj.to_s }
       })
       locals = { 'local1' => Factory.string }
-      exp = Factory.partial_json_rendered(locals).to_s
+      exp = Factory.partial_json_rendered(engine, locals).to_s
 
       assert_equal exp, engine.partial('_partial.json', locals)
     end
