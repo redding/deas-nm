@@ -1,3 +1,4 @@
 node('thing') {
   node('local1', local1)
+  node('logger', logger.to_s)
 }

@@ -7,6 +7,7 @@ module Deas::Nm
   class TemplateEngine < Deas::TemplateEngine
 
     DEFAULT_HANDLER_LOCAL = 'view'.freeze
+    DEFAULT_LOGGER_LOCAL  = 'logger'.freeze
     DEFAULT_SERIALIZER = proc{ |obj, template_name| obj }.freeze # no-op
 
     def nm_source
@@ -15,6 +16,10 @@ module Deas::Nm
 
     def nm_handler_local
       @nm_handler_local ||= (self.opts['handler_local'] || DEFAULT_HANDLER_LOCAL)
+    end
+
+    def nm_logger_local
+      @nm_logger_local ||= (self.opts['logger_local'] || DEFAULT_LOGGER_LOCAL)
     end
 
     def nm_serializer
@@ -30,7 +35,7 @@ module Deas::Nm
 
     def partial(template_name, locals)
       self.nm_serializer.call(
-        self.nm_source.render(template_name, locals),
+        self.nm_source.render(template_name, default_locals(locals)),
         template_name
       )
     end
@@ -42,7 +47,11 @@ module Deas::Nm
     private
 
     def render_locals(view_handler, locals)
-      { self.nm_handler_local => view_handler }.merge(locals)
+      { self.nm_handler_local => view_handler }.merge(default_locals(locals))
+    end
+
+    def default_locals(locals)
+      { self.nm_logger_local => self.logger }.merge(locals)
     end
 
   end
