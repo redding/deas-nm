@@ -86,6 +86,21 @@ class Deas::Nm::TemplateEngine
       end
     end
 
+    should "render nm templates that render partials and serialize them" do
+      engine = Deas::Nm::TemplateEngine.new({
+        'source_path' => TEST_SUPPORT_PATH,
+        'serializer' => proc{ |obj, template_name| obj.to_s }
+      })
+      view_handler = OpenStruct.new({
+        :identifier => Factory.integer,
+        :name => Factory.string
+      })
+      locals = { 'local1' => Factory.string }
+      exp = Factory.template_partial_json_rendered(engine, view_handler, locals).to_s
+
+      assert_equal exp, engine.render('template_partial.json', view_handler, locals)
+    end
+
   end
 
 end
