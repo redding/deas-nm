@@ -11,7 +11,9 @@ module Deas::Nm
     DEFAULT_SERIALIZER = proc{ |obj, template_name| obj }.freeze # no-op
 
     def nm_source
-      @nm_source ||= Nm::Source.new(self.source_path)
+      @nm_source ||= Nm::Source.new(self.source_path, {
+        self.nm_logger_local => self.logger
+      })
     end
 
     def nm_handler_local
@@ -35,7 +37,7 @@ module Deas::Nm
 
     def partial(template_name, locals)
       self.nm_serializer.call(
-        self.nm_source.render(template_name, default_locals(locals)),
+        self.nm_source.render(template_name, locals),
         template_name
       )
     end
@@ -47,11 +49,7 @@ module Deas::Nm
     private
 
     def render_locals(view_handler, locals)
-      { self.nm_handler_local => view_handler }.merge(default_locals(locals))
-    end
-
-    def default_locals(locals)
-      { self.nm_logger_local => self.logger }.merge(locals)
+      { self.nm_handler_local => view_handler }.merge(locals)
     end
 
   end

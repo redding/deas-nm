@@ -21,6 +21,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency("assert", ["~> 2.12"])
 
   gem.add_dependency("deas", ["~> 0.28"])
-  gem.add_dependency("nm")
+  gem.add_dependency("nm",   ["~> 0.4"])
 
 end

@@ -1,0 +1,10 @@
+node('thing') {
+  node('id',     view.identifier)
+  node('name',   view.name)
+  node('local1', local1)
+  node('logger', logger.to_s)
+}
+
+node 'partial' do
+  partial('_partial.json', 'local1' => local1)
+end
