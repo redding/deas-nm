@@ -46,6 +46,10 @@ module Deas::Nm
       raise NotImplementedError
     end
 
+    def compile(template_name, compiled_content)
+      raise NotImplementedError
+    end
+
     private
 
     def render_locals(view_handler, locals)
