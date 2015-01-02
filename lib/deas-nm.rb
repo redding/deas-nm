@@ -28,7 +28,7 @@ module Deas::Nm
       @nm_serializer ||= (self.opts['serializer'] || DEFAULT_SERIALIZER)
     end
 
-    def render(template_name, view_handler, locals)
+    def render(template_name, view_handler, locals, &content)
       self.nm_serializer.call(
         self.nm_source.render(template_name, render_locals(view_handler, locals)),
         template_name
