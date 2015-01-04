@@ -86,6 +86,12 @@ class Deas::Nm::TemplateEngine
       end
     end
 
+    should "not implement the engine compile method" do
+      assert_raises NotImplementedError do
+        subject.compile('_partial.json', Factory.text)
+      end
+    end
+
     should "render nm templates that render partials and serialize them" do
       engine = Deas::Nm::TemplateEngine.new({
         'source_path' => TEST_SUPPORT_PATH,
