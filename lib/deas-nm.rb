@@ -35,15 +35,11 @@ module Deas::Nm
       )
     end
 
-    def partial(template_name, locals)
+    def partial(template_name, locals, &content)
       self.nm_serializer.call(
         self.nm_source.render(template_name, locals),
         template_name
       )
-    end
-
-    def capture_partial(template_name, locals, &content)
-      raise NotImplementedError
     end
 
     def compile(template_name, compiled_content)
