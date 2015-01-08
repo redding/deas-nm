@@ -17,7 +17,7 @@ class Deas::Nm::TemplateEngine
 
     should have_imeths :nm_source, :nm_handler_local, :nm_logger_local
     should have_imeths :nm_serializer
-    should have_imeths :render, :partial, :capture_partial
+    should have_imeths :render, :partial, :compile
 
     should "be a Deas template engine" do
       assert_kind_of Deas::TemplateEngine, subject
@@ -54,57 +54,10 @@ class Deas::Nm::TemplateEngine
       assert_equal obj, subject.nm_serializer.call(obj, Factory.string)
     end
 
-    should "render nm template files and serialize them" do
-      engine = Deas::Nm::TemplateEngine.new({
-        'source_path' => TEST_SUPPORT_PATH,
-        'serializer' => proc{ |obj, template_name| obj.to_s }
-      })
-      view_handler = OpenStruct.new({
-        :identifier => Factory.integer,
-        :name => Factory.string
-      })
-      locals = { 'local1' => Factory.string }
-      exp = Factory.template_json_rendered(engine, view_handler, locals).to_s
-
-      assert_equal exp, engine.render('template.json', view_handler, locals)
-    end
-
-    should "render nm partials and serialize them" do
-      engine = Deas::Nm::TemplateEngine.new({
-        'source_path' => TEST_SUPPORT_PATH,
-        'serializer' => proc{ |obj, template_name| obj.to_s }
-      })
-      locals = { 'local1' => Factory.string }
-      exp = Factory.partial_json_rendered(engine, locals).to_s
-
-      assert_equal exp, engine.partial('_partial.json', locals)
-    end
-
-    should "not implement the engine capture partial method" do
-      assert_raises NotImplementedError do
-        subject.capture_partial('_partial.json', {})
-      end
-    end
-
     should "not implement the engine compile method" do
       assert_raises NotImplementedError do
         subject.compile('_partial.json', Factory.text)
       end
-    end
-
-    should "render nm templates that render partials and serialize them" do
-      engine = Deas::Nm::TemplateEngine.new({
-        'source_path' => TEST_SUPPORT_PATH,
-        'serializer' => proc{ |obj, template_name| obj.to_s }
-      })
-      view_handler = OpenStruct.new({
-        :identifier => Factory.integer,
-        :name => Factory.string
-      })
-      locals = { 'local1' => Factory.string }
-      exp = Factory.template_partial_json_rendered(engine, view_handler, locals).to_s
-
-      assert_equal exp, engine.render('template_partial.json', view_handler, locals)
     end
 
   end
