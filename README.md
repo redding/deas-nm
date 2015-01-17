@@ -62,6 +62,14 @@ c.template_source "/path/to/templates" do |s|
 end
 ```
 
+Nm doesn't cache templates by default.  To enable caching, pass a `'cache'` option when registering:
+
+```ruby
+  c.template_source "/path/to/templates" do |s|
+    s.engine 'nm', Deas::Nm::TemplateEngine, 'cache' => true
+  end
+```
+
 ## Installation
 
 Add this line to your application's Gemfile:
