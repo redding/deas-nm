@@ -12,7 +12,8 @@ module Deas::Nm
 
     def nm_source
       @nm_source ||= Nm::Source.new(self.source_path, {
-        self.nm_logger_local => self.logger
+        :cache  => self.opts['cache'],
+        :locals => { self.nm_logger_local => self.logger }
       })
     end
 

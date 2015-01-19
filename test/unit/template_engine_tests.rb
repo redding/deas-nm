@@ -39,6 +39,11 @@ class Deas::Nm::TemplateEngine
       assert_equal handler_local, engine.nm_handler_local
     end
 
+    should "pass any given cache option to the Nm source" do
+      engine = Deas::Nm::TemplateEngine.new('cache' => true)
+      assert_kind_of Hash, engine.nm_source.cache
+    end
+
     should "use 'logger' as the logger local name by default" do
       assert_equal 'logger', subject.nm_logger_local
     end
