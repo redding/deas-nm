@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version     = Deas::Nm::VERSION
   gem.authors     = ["Kelly Redding", "Collin Redding"]
   gem.email       = ["kelly@kellyredding.com", "collin.redding@me.com"]
-  gem.description = %q{Deas template engine for Nm templates}
   gem.summary     = %q{Deas template engine for Nm templates}
+  gem.description = %q{Deas template engine for Nm templates}
   gem.homepage    = "http://github.com/redding/deas-nm"
   gem.license     = 'MIT'
 
@@ -18,9 +18,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_development_dependency("assert", ["~> 2.15"])
+  gem.add_development_dependency("assert", ["~> 2.15.1"])
 
-  gem.add_dependency("deas", ["~> 0.39"])
-  gem.add_dependency("nm",   ["~> 0.5"])
+  gem.add_dependency("deas", ["~> 0.39.1"])
+  gem.add_dependency("nm",   ["~> 0.5.0"])
 
 end
