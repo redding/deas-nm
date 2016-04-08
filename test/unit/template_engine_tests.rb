@@ -10,7 +10,8 @@ class Deas::Nm::TemplateEngine
     desc "Deas::Nm::TemplateEngine"
     setup do
       @engine = Deas::Nm::TemplateEngine.new({
-        'source_path' => TEST_SUPPORT_PATH
+        'source_path' => TEST_SUPPORT_PATH,
+        'ext'         => 'nm'
       })
     end
     subject{ @engine }
@@ -42,6 +43,12 @@ class Deas::Nm::TemplateEngine
     should "pass any given cache option to the Nm source" do
       engine = Deas::Nm::TemplateEngine.new('cache' => true)
       assert_kind_of Hash, engine.nm_source.cache
+    end
+
+    should "pass any given ext option to the Nm source" do
+      ext = Factory.string
+      engine = Deas::Nm::TemplateEngine.new('ext' => ext)
+      assert_equal ".#{ext}", engine.nm_source.ext
     end
 
     should "use 'logger' as the logger local name by default" do

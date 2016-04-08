@@ -1,0 +1,4 @@
+# This files is just to provide a conflict when rendering. If deas-nm isn't
+# passing an extension down to nm then nm will try and render this file which
+# will error.
+raise "oops - trying to render wrong template"

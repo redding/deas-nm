@@ -14,7 +14,8 @@ class Deas::Nm::TemplateEngine
 
       @engine = Deas::Nm::TemplateEngine.new({
         'source_path' => TEST_SUPPORT_PATH,
-        'serializer' => proc{ |obj, template_name| obj.to_s }
+        'ext'         => 'nm',
+        'serializer'  => proc{ |obj, template_name| obj.to_s }
       })
     end
     subject{ @engine }
