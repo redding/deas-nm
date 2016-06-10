@@ -11,3 +11,12 @@ require 'test/support/factory'
 
 require 'pathname'
 TEST_SUPPORT_PATH = Pathname.new(File.expand_path('../support', __FILE__))
+
+# 1.8.7 backfills
+
+# Array#sample
+if !(a = Array.new).respond_to?(:sample) && a.respond_to?(:choice)
+  class Array
+    alias_method :sample, :choice
+  end
+end
